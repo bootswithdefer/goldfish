@@ -9,13 +9,14 @@ WORKDIR /app
 # Install Goldfish binary and clean up
 RUN apk --no-cache add curl ca-certificates && \
           curl -L -o goldfish https://github.com/Caiyeon/goldfish/releases/download/$GOLDFISH_VERSION/goldfish-linux-amd64 && \
-          chmod +x ./goldfish
+          chmod +x ./goldfish && \
+          mkdir -p /app/config
 
 #Copy Goldfish files
-COPY docker.hcl .
+COPY docker.hcl /app/config/
 
 #Default port to expose
 EXPOSE 8000
 
 #Default command to run
-CMD /app/goldfish -config=/app/docker.hcl
+CMD /app/goldfish -config=/app/config/docker.hcl
